@@ -1,0 +1,39 @@
+.seat {
+    width: 40px;
+    height: 40px;
+    color: #fff;
+    cursor: pointer;
+    border: 1px solid #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s all;
+
+    &.vip {
+        background: rgb(98, 43, 57);
+    }
+    &.normal {
+        background: rgb(144, 144, 144);
+
+        &:hover {
+            background: var(--primary);
+        }
+    }
+    &.preserved {
+        background: rgb(59, 59, 59);
+        cursor: default;
+
+        &:hover {
+            background: rgb(59, 59, 59);
+        }
+    }
+    &.selecting {
+        background: var(--primary);
+        color: #000;
+    }
+
+    &:hover {
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+            rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    }
+}
