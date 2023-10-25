@@ -11,44 +11,63 @@ import User from "./page/User/User";
 import ListMovie from "./page/ListMovie/ListMovie";
 import ListTheater from "./page/ListTheater/ListTheater";
 import DefaultLayout from "./Layout/DefaultLayout";
+import Spinner from "./component/Spinner";
 
 export const route = {
-	home: { path: "/" },
-	login: { path: "/login" },
-	user: { path: "/user" },
-	theaters: { path: "/theaters" },
+	home: {
+		path: "/",
+		element: <HomeLayout><Home /></HomeLayout>
+	},
+	login: {
+		path: "/login",
+		element: <UserLayout title="Login" body={<Login />} />
+	},
+	user: {
+		path: "/user",
+		element: <UserLayout title="User" body={<User />} />
+	},
+	theaters: {
+		path: "/theaters",
+		element: <DefaultLayout title="Danh sách rạp" body={<ListTheater />} />
+	},
 
 	movies: {
 		path: "/movies",
+		element: <DefaultLayout title="Danh sách phim" body={<ListMovie />} />,
 		nameId: (nameId) => `/movies/${nameId}`,
 		search: (keyword) => `/movies?search=${keyword}`,
 		dangChieu: `/movies?dang_chieu=true`,
 		sapChieu: `/movies?sap_chieu=true`,
-		detail: { path: '/movies/:nameId' },
+	},
+
+	detail: {
+		path: '/movies/:nameId',
+		element: <DetailLayout title="" body={<Detail />} />
 	},
 
 	booking: {
 		path: '/booking/:id',
+		element: <BookingLayout title="Booking" body={<Booking />} />,
 		id: (id) => `/booking/${id}`,
+	},
+
+	others: {
+		path: "*",
+		element: <DefaultLayout title="Lỗi 404: Không tìm thấy trang!" />,
 	}
 }
 
 function App() {
-	return (
+	return <>
+		<Spinner />
 		<BrowserRouter>
 			<Routes>
-				<Route path={route.home.path} element={<HomeLayout><Home /></HomeLayout>} />
-				<Route path={route.login.path} element={<UserLayout title="Login" body={<Login />} />} />
-				<Route path={route.user.path} element={<UserLayout title="User" body={<User />} />} />
-				<Route path={route.booking.path} element={<BookingLayout title="Booking" body={<Booking />} />} />
-				<Route path={route.movies.path} element={<DefaultLayout title="Danh sách phim" body={<ListMovie />} />} />
-				<Route path={route.movies.detail.path} element={<DetailLayout title="" body={<Detail />} />} />
-				<Route path={route.theaters.path} element={<DefaultLayout title="Danh sách rạp" body={<ListTheater />} />} />
-
-				<Route path="*" element={<DefaultLayout title="Lỗi 404: Không tìm thấy trang!" />} />
+				{Object.values(route).map(({ path, element }) => {
+					return <Route key={path} path={path} element={element} />
+				})}
 			</Routes>
 		</BrowserRouter>
-	)
+	</>
 }
 
 export default App

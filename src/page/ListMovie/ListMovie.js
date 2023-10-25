@@ -5,11 +5,13 @@ import { useLocation } from 'react-router-dom';
 import Movies from './Movies';
 import SearchBar from './SearchBar';
 import { convertToSlug } from './utils';
+import { Skeleton } from 'antd';
 
 export default function ListMovie() {
     const location = useLocation()
     const [listPhim, setListPhim] = useState([]);
-    const [listPhimSearch, setListPhimSearch] = useState(listPhim);
+    const [listPhimSearch, setListPhimSearch] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const getParams = (key) => {
         const searchParams = new URLSearchParams(location.search);
@@ -28,6 +30,7 @@ export default function ListMovie() {
     }
 
     const searchPhim = (list) => {
+
         let searchKey = getParams('search')
         let result = [...list]
         result = searchKey
@@ -72,6 +75,7 @@ export default function ListMovie() {
                 setListPhim(list)
                 let result = searchPhim(list)
                 setListPhimSearch(result)
+                setLoading(false)
             })
             .catch((err) => {
                 console.log(err);
@@ -83,13 +87,21 @@ export default function ListMovie() {
         setListPhimSearch(result)
     }, [location])
 
+    // useEffect(() => {
+    //     setLoading(!listPhimSearch ? true : false)
+    // }, [listPhimSearch])
+
+
     return (
         <div className='container'>
             <div className="search-bar mt-5 w-full md:w-1/2 flex items-center mx-auto">
                 <SearchBar defaultValue={getParams('search')} />
             </div>
             <div className="my-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <Movies list={listPhimSearch} />
+                {loading ? <Skeleton.Button active block></Skeleton.Button> :
+                    <Movies list={listPhimSearch} />
+                }
+
             </div>
         </div>
     )

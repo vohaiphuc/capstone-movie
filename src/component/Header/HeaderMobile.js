@@ -47,7 +47,7 @@ export default function HeaderMobile() {
             return [
                 {
                     key: 'user',
-                    label: <NavLink to="/user">Trang cá nhân</NavLink>,
+                    label: <NavLink to="/user">Tài khoản</NavLink>,
                 },
                 {
                     key: 'logout',
@@ -76,10 +76,10 @@ export default function HeaderMobile() {
             key: 'movie',
             label: <NavLink to="/movies">Phim</NavLink>,
         },
-        {
-            key: 'theater',
-            label: <NavLink to="/theaters">Rạp</NavLink>,
-        },
+        // {
+        //     key: 'theater',
+        //     label: <NavLink to="/theaters">Rạp</NavLink>,
+        // },
         ...renderNavBtn()
     ];
     return (

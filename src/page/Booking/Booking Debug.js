@@ -11,14 +11,14 @@ export default function Booking() {
     const [searchParams, _] = useSearchParams()
     let params = useParams()
     const [xuatChieu, setXuatChieu] = useState([])
-    const [ngayChieuGioChieu, setNgayChieuGioChieu] = useState("")
     const [selectSeats, setSelectSeats] = useState([]);
     const navigate = useNavigate()
 
-    let maLichChieu = params.id
-    useEffect(() => {
 
-        // INVALID PARAM -> NAVIGATE
+    let maLichChieu = params.id
+    const [ngayChieuGioChieu, setNgayChieuGioChieu] = useState("")
+    useEffect(() => {
+        // FETCH API
         theaterServ.getList()
             .then((res) => {
                 let listLichChieu = []
@@ -30,39 +30,17 @@ export default function Booking() {
                         phim.forEach(item => listLichChieu.push(...item.lstLichChieuTheoPhim))
                     })
                 })
-                console.log("🚀 ~ file: Booking.js:34 ~ .then ~ listLichChieu:", listLichChieu)
                 let phim = listLichChieu.filter(item => item.maLichChieu == maLichChieu)[0]
-                console.log("🚀 ~ file: Booking.js:43 ~ .then ~ phim:", phim)
 
-                let ngayGioChieuUrl = searchParams.get('date')
-
-                if (ngayGioChieuUrl != phim.ngayChieuGioChieu) {
-                    navigate(`/booking/${maLichChieu}?date=${phim.ngayChieuGioChieu}`)
-                } else {
-                    setNgayChieuGioChieu(phim.ngayChieuGioChieu)
-                }
-            })
-            .catch((err) => {
-                console.log(err)
+                setNgayChieuGioChieu(phim.ngayChieuGioChieu)
             })
     }, [])
 
-    // console.log('render')
-
     useEffect(() => {
         // FETCH API
-        if (!ngayChieuGioChieu) { return }
         bookingServ.get(maLichChieu)
             .then((res) => {
-                let xuat = res.data.content
-                console.log({ xuat })
-                let correctGioChieu = moment(ngayChieuGioChieu).format("HH:mm")
-                xuat.thongTinPhim.gioChieu = correctGioChieu
-                xuat.thongTinPhim.ngayChieuGioChieu = ngayChieuGioChieu
-                setXuatChieu(xuat)
-            })
-            .catch((err) => {
-                console.log(err)
+                setXuatChieu(res.data.content)
             })
     }, [ngayChieuGioChieu])
 

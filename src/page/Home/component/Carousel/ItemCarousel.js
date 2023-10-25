@@ -33,17 +33,15 @@ export default function ItemCarousel({ phim, phimHay, phimHot, button }) {
                         : ''
                     }
                 </div>
-                {phimHay && phim.danhGia >= 8
-                    ? (<div className="high-rate">
+                {phimHay && phim.danhGia >= 8 && (
+                    <div className="high-rate">
                         <p>Phim hay</p>
                     </div>)
-                    : null
                 }
-                {phimHot && phim.hot
-                    ? <div className="phim-hot">
+                {phimHot && phim.hot && (
+                    <div className="phim-hot">
                         <FontAwesomeIcon icon={faFire} />
-                    </div>
-                    : null
+                    </div>)
                 }
             </div>
         </NavLink>

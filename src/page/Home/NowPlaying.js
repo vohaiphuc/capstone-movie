@@ -1,14 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button } from 'antd'
 import { useSelector } from 'react-redux'
-import { useWindowSize } from '@react-hook/window-size'
 import ArrowCarousel from './component/Carousel/ArrowCarousel'
-import { NavLink } from 'react-router-dom'
 import { route } from '../../App'
-import ItemCarousel from './component/Carousel/ItemCarousel'
-import SlideHeader from './component/Carousel/SlideHeader'
+import ContainerCarousel from './component/Carousel/ContainerCarousel'
+import HeaderCarousel from './component/Carousel/HeaderCarousel'
 
-const sliderStat = {
+const sliderConfig = {
     width: 270,
     maxItem: 5
 }
@@ -19,26 +16,13 @@ const extraInfo = {
     button: 'dat-ve',
 }
 
-const NowPlaying = () => {
-    const [width, height] = useWindowSize()
-    const listPhim = useSelector(state => state.filmSlice.list)
-    const [nowPlayingMovie, setNowPlayingMovie] = useState([]);
-    const [slidesToShow, setSlidesToShow] = useState(0)
+export default function NowPlaying() {
 
-    useEffect(() => {
-        setNowPlayingMovie(listPhim.filter(phim => phim.dangChieu && phim.sapChieu == false))
-    }, [listPhim])
+    const list = useSelector(state => state.filmSlice.list)
+        .filter(phim => phim.dangChieu && !phim.sapChieu)
 
-    // Responsive
-    useEffect(() => {
-        let slides = Math.floor(width / sliderStat.width)
-        slides = slides > sliderStat.maxItem ? sliderStat.maxItem : slides
-        setSlidesToShow(slides)
-    }, [width])
-
-    return <div className='container now-playing slider-style-1 relative'>
-        <SlideHeader header='Phim đang chiếu' navLink={route.movies.dangChieu} />
-        <ArrowCarousel slidesToShow={slidesToShow} list={nowPlayingMovie} extraInfo={extraInfo} />
-    </div>
+    return <ContainerCarousel>
+        <HeaderCarousel title='Phim đang chiếu' navLink={route.movies.dangChieu} />
+        <ArrowCarousel sliderConfig={sliderConfig} list={list} extraInfo={extraInfo} />
+    </ContainerCarousel>
 }
-export default NowPlaying

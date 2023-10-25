@@ -12,8 +12,11 @@ export default function Search() {
     const handleOnKeyDown = (e) => {
         if (e.key == "Enter") {
             e.preventDefault()
-            setInputBar(false)
-            navigate(route.movies.search(searchKey))
+            let pattern = /^([a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i
+            if (pattern.test(searchKey)) {
+                setInputBar(false)
+                navigate(route.movies.search(searchKey))
+            }
         }
     }
     const handleSearch = () => {

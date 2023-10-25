@@ -7,6 +7,7 @@ import moment from 'moment';
 import "./style.scss"
 import { useWindowWidth } from '@react-hook/window-size';
 import { useMediaQuery } from 'react-responsive'
+import { ConfigProvider, Skeleton } from 'antd';
 
 const Desktop = ({ children }) => {
     const isDesktop = useMediaQuery({ minWidth: 992 })
@@ -42,6 +43,7 @@ export default function Detail() {
     const [phim, setPhim] = useState([]);
     const width = useWindowWidth()
     console.log("🚀 ~ file: Detail.js:26 ~ Detail ~ width:", width)
+    const [loading, setLoading] = useState(true);
 
     // xử lý API => gọi ra tên phim để gắn vào title của DefaultBanner
 
@@ -52,7 +54,9 @@ export default function Detail() {
                 console.log(phim)
                 let defaultTrailer = "https://www.youtube.com/embed/hktzirCnJmQ?si=_I17nhK-w7n7gstR"
                 phim.trailer = !phim.trailer.startsWith("https://www.youtube.com") ? defaultTrailer : phim.trailer
+                phim.trailer = phim.trailer.startsWith("https://www.youtube.com/watch?v=") ? phim.trailer.replace("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/") : phim.trailer
                 setPhim(phim)
+                setLoading(false)
             })
             .catch((err) => {
                 console.log(err);
@@ -64,6 +68,7 @@ export default function Detail() {
         <>
             <DefaultBanner title={phim.tenPhim} breadcrumb={itemsBreadcrumb} />
             <div className="container space-y-10 px-3 pb-10">
+
                 <div className='my-10'>
                     <h2 className='text-2xl font-semibold mb-2 capitalize'>{phim.tenPhim}</h2>
                     <span className='font-light'>Ngày khởi chiếu: {moment(phim.ngayKhoiChieu).format("DD/MM/YYYY")}</span>
@@ -71,11 +76,32 @@ export default function Detail() {
                 <div className="grid grid-cols-4 gap-5 relative py-10">
                     <div className={` w-[${width}px] bg-full`}></div>
                     <div className="col-span-4 md:col-span-1">
-                        <img src={phim.hinhAnh} alt="" className='w-full aspect-[4/3] md:aspect-[3/4] object-cover' />
+                        {loading ?
+                            <ConfigProvider
+                                theme={{
+                                    token: {
+                                        controlHeight: 100
+                                    },
+                                }}
+                            >
+                                <Skeleton.Image active block></Skeleton.Image>
+                            </ConfigProvider>
+                            :
+                            <img src={phim.hinhAnh} alt="" className='w-full aspect-[4/3] md:aspect-[3/4] object-cover' />
+                        }
                     </div>
                     <div className="col-span-4 md:col-span-3">
-                        {/* <p>{phim.tenPhim}</p> */}
-                        <iframe className="w-full h-[300px] md:h-full" src={phim.trailer} title="YouTube video player" frameBorder={0} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+                        {loading ? <ConfigProvider
+                            theme={{
+                                token: {
+                                    controlHeight: 100
+                                },
+                            }}
+                        >
+                            <Skeleton.Image active block></Skeleton.Image>
+                        </ConfigProvider> :
+                            <iframe className="w-full h-[300px] md:h-full" src={phim.trailer} title="YouTube video player" frameBorder={0} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen />
+                        }
                     </div>
                 </div>
 
@@ -98,6 +124,7 @@ export default function Detail() {
                         <TabTheater phim={phim} screen='mobile' />
                     </Mobile>
                 </div>
+
             </div>
         </>
     )

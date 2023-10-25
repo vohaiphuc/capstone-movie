@@ -6,6 +6,8 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import { faFacebook, faFacebookF, faGooglePlusG, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { bannerLocalStorage } from '../../api/localService';
 import { useWindowSize } from '@react-hook/window-size';
+import { NavLink } from 'react-router-dom';
+import { route } from '../../App';
 
 const contentStyle = {
     height: '160px',
@@ -16,6 +18,7 @@ const contentStyle = {
 };
 const Banner = () => {
     const [banner, setBanner] = useState([]);
+    const [movie, setMovie] = useState();
     const ref1 = useRef()
     const ref2 = useRef()
 
@@ -66,7 +69,7 @@ const Banner = () => {
     }
 
     const handleSlide = (currentPage, nextPage) => {
-
+        setMovie(banner[nextPage]);
         if (nextPage - currentPage == 1 || (currentPage > 1 && nextPage == 0)) { // next
             ref2.current.next()
         } else if (nextPage - currentPage == -1) { // prev
@@ -109,8 +112,12 @@ const Banner = () => {
                     <div className="flex w-full items-center justify-center sm:justify-between mb-10">
                         {/* <p className='text-white font-semibold ml-5'>Trailer</p> */}
                         <div className='text-white sm:ml-5'>
-                            <button className='rounded-sm px-5 py-3 bg-orange-600 mr-5'>Đặt vé</button>
-                            <button className='rounded-sm px-5 py-3 text-orange-600 bg-white'>Chi tiết</button>
+                            <NavLink to={route.movies.nameId(movie?.maPhim)}>
+                                <button className='rounded-sm px-5 py-3 bg-orange-600 mr-5'>Đặt vé</button>
+                            </NavLink>
+                            <NavLink to={route.movies.nameId(movie?.maPhim)}>
+                                <button className='rounded-sm px-5 py-3 text-orange-600 bg-white'>Chi tiết</button>
+                            </NavLink>
                         </div>
 
                         <div className="hidden sm:block">

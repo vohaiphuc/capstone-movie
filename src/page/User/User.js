@@ -3,6 +3,7 @@ import {
     Avatar,
     Checkbox,
     ConfigProvider,
+    Divider,
     Form,
     Input,
     Progress,
@@ -18,6 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import "./style.scss"
 import { setLogin } from '../../redux/userSlice'
 import { userLocalStorage } from '../../api/localService'
+import Ticket from './Ticket'
 const { Option } = Select
 
 const formItemLayout = {
@@ -61,7 +63,7 @@ const User = () => {
         }
         userServ.getDetail()
             .then((res) => {
-                console.log(res.data.content)
+                // console.log(res.data.content)
                 setUserDetail(res.data.content)
             })
             .catch((err) => {
@@ -111,7 +113,7 @@ const User = () => {
         const allTicket = userDetail.thongTinDatVe
         let totalPurchase = 0
         if (allTicket) {
-            allTicket.forEach(ticket => totalPurchase += ticket.giaVe)
+            allTicket.forEach(ticket => totalPurchase += ticket.giaVe * ticket.danhSachGhe.length)
         } else {
             return
         }
@@ -160,89 +162,95 @@ const User = () => {
         )
     }
 
-    return <div className="form px-2 md:px-0" >
-        <div className='flex flex-col items-center my-5 space-y-2'>
-            <Avatar size={128} src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" />
-            <h2 className='text-xl font-semibold text-center'>{user?.hoTen}</h2>
+    return <>
+        <div className="form px-2 md:px-0 pb-5" >
+            <div className='flex flex-col items-center my-5 space-y-2'>
+                <Avatar size={128} src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" />
+                <h2 className='text-xl font-semibold text-center'>{user?.hoTen}</h2>
+            </div>
+
+            {renderProgress()}
+            <h2 className='my-5 text-2xl font-bold'>Cập nhật thông tin</h2>
+            <Form
+                {...formItemLayout}
+                form={form}
+                size='large'
+                layout='vertical'
+                name="register"
+                onFinish={onFinish}
+                initialValues={userDetail}
+                scrollToFirstError
+                key={userDetail.hoTen}
+            >
+                <Form.Item
+                    name="taiKhoan"
+                    label="Tài khoản"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Vui lòng điền tài khoản: 8-20 ký tự, chỉ số và chữ, không có ký tự đặc biệt.',
+                            whitespace: true,
+                            pattern: /^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/g
+                        },
+                    ]}
+                >
+                    <Input disabled />
+                </Form.Item>
+
+                <Form.Item
+                    name="hoTen"
+                    label="Họ và tên"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Vui lòng điền!',
+                        },
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+
+                <Form.Item
+                    name="email"
+                    label="E-mail"
+                    rules={[
+                        {
+                            type: 'email',
+                            message: 'Email không hợp lệ!',
+                        },
+                        {
+                            required: true,
+                            message: 'Vui lòng điền!',
+                        },
+                    ]}
+                >
+                    <Input disabled />
+                </Form.Item>
+
+                <Form.Item
+                    name="matKhau"
+                    label="Mật khẩu"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Vui lòng điền!',
+                        },
+                    ]}
+                    hasFeedback
+                >
+                    <Input.Password />
+                </Form.Item>
+
+                <Form.Item>
+                    <button type='submit' className='submit-btn'>Cập nhật</button>
+                </Form.Item>
+
+            </Form>
+            <Divider />
+            <h2 className='my-5 text-2xl font-bold'>Vé đã đặt</h2>
+
+            <Ticket thongTinDatVe={userDetail?.thongTinDatVe} />
         </div>
-
-        {renderProgress()}
-        <h2 className='my-5 text-2xl font-bold'>Cập nhật thông tin</h2>
-        <Form
-            {...formItemLayout}
-            form={form}
-            size='large'
-            layout='vertical'
-            name="register"
-            onFinish={onFinish}
-            initialValues={userDetail}
-            scrollToFirstError
-            key={userDetail.hoTen}
-        >
-            <Form.Item
-                name="taiKhoan"
-                label="Tài khoản"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Vui lòng điền tài khoản: 8-20 ký tự, chỉ số và chữ, không có ký tự đặc biệt.',
-                        whitespace: true,
-                        pattern: /^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/g
-                    },
-                ]}
-            >
-                <Input disabled />
-            </Form.Item>
-
-            <Form.Item
-                name="hoTen"
-                label="Họ và tên"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Vui lòng điền!',
-                    },
-                ]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item
-                name="email"
-                label="E-mail"
-                rules={[
-                    {
-                        type: 'email',
-                        message: 'Email không hợp lệ!',
-                    },
-                    {
-                        required: true,
-                        message: 'Vui lòng điền!',
-                    },
-                ]}
-            >
-                <Input disabled />
-            </Form.Item>
-
-            <Form.Item
-                name="matKhau"
-                label="Mật khẩu"
-                rules={[
-                    {
-                        required: true,
-                        message: 'Vui lòng điền!',
-                    },
-                ]}
-                hasFeedback
-            >
-                <Input.Password />
-            </Form.Item>
-
-            <Form.Item>
-                <button type='submit' className='submit-btn'>Cập nhật</button>
-            </Form.Item>
-
-        </Form>
-    </div>
+    </>
 }
 export default User

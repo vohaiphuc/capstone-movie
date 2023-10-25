@@ -4,26 +4,24 @@ import { Carousel } from 'antd'
 import React, { useRef } from 'react'
 import ItemCarousel from './ItemCarousel'
 import ItemCarousel2 from './ItemCarousel2'
+import useSlideToShow from '../../hook/useSlideToShow'
 
-const defaultExtraInfo = {
-    phimHay: false,
-    phimHot: false,
-    button: null,
-}
-
-export default function ArrowCarousel({ slidesToShow, list, extraInfo }) {
+export default function ArrowCarousel({ sliderConfig, list, extraInfo }) {
+    const slidesToShow = useSlideToShow(sliderConfig)
     const refCarousel = useRef()
+
     const renderCarousel = () => {
-        let { phimHay, phimHot, button } = extraInfo
-        return list?.map((phim, index) => {
-            return <ItemCarousel key={index} phim={phim} phimHay={phimHay} phimHot={phimHot} button={button} />
-        })
+        return (extraInfo) ?
+            list?.map((phim, index) => {
+                let { phimHay, phimHot, button } = extraInfo
+                return <ItemCarousel key={index} phim={phim} phimHay={phimHay} phimHot={phimHot} button={button} />
+            }) :
+            list?.map((phim, index) => {
+                return <ItemCarousel2 phim={phim} key={index} />
+            })
     }
-    const renderCarousel2 = () => {
-        return list?.map((phim, index) => {
-            return <ItemCarousel2 phim={phim} key={index} />
-        })
-    }
+
+
     return (
         <div className='carousel'>
             <div className="slick-arrow">
@@ -32,11 +30,7 @@ export default function ArrowCarousel({ slidesToShow, list, extraInfo }) {
                 </button>
             </div>
             <Carousel dots={false} slidesToShow={slidesToShow} ref={refCarousel}>
-                {/* {renderItem()} */}
-                {extraInfo
-                    ? renderCarousel()
-                    : renderCarousel2()
-                }
+                {renderCarousel()}
             </Carousel>
             <div className="slick-arrow">
                 <button className="slick-next" onClick={() => { refCarousel.current.next() }}>

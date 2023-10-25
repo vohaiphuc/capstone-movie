@@ -9,13 +9,15 @@ import { configureStore } from '@reduxjs/toolkit';
 import userSlice from "./redux/userSlice";
 import filmSlice from "./redux/filmSlice";
 import loginFormSlice from './redux/loginFormSlice';
+import spinnerSlice from './redux/spinnerSlice';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     userSlice,
     filmSlice,
     loginFormSlice,
+    spinnerSlice,
   }
 })
 

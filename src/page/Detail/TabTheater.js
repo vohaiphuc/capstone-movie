@@ -14,14 +14,14 @@ const TabTheater = ({ phim, screen }) => {
                 label: <Tooltip title={cumRap.tenHeThongRap.toUpperCase()} placement="bottom"><img src={cumRap.logo} alt="" width={50} /></Tooltip>,
                 children: (screen == 'desktop')
                     ?
-                    <Tabs tabPosition='left' defaultActiveKey="1" items={renderRap(cumRap.cumRapChieu)} onChange={() => { console.log("Change rạp") }} className='h-[500px]' />
+                    <Tabs tabPosition='left' defaultActiveKey="1" items={renderRap(cumRap.cumRapChieu, true)} onChange={() => { console.log("Change rạp") }} className='h-[500px]' />
                     :
-                    <Collapse defaultActiveKey={['1']} items={renderRap(cumRap.cumRapChieu)} />
+                    <Collapse defaultActiveKey={['1']} items={renderRap(cumRap.cumRapChieu, false)} />
             }
         })
     }
 
-    const renderRap = (cumRap) => {
+    const renderRap = (cumRap, isFixedHeight) => {
         return cumRap.map((rap, index) => {
             let tenCumRap = rap.tenCumRap
             let [maCum, tenRap] = tenCumRap.split(" - ")
@@ -29,7 +29,7 @@ const TabTheater = ({ phim, screen }) => {
             return {
                 key: `rap_${index}`,
                 label: <div className='text-left'><p>{maCum}</p><p className='text-[#d96c2c]'>{tenRap}</p></div>,
-                children: <div className='h-[500px] overflow-auto'>{renderXuatChieu(rap.lichChieuPhim)}</div>,
+                children: <div className={`${isFixedHeight ? 'h-[500px]' : ""} overflow-auto`}>{renderXuatChieu(rap.lichChieuPhim)}</div>,
             }
         })
     }

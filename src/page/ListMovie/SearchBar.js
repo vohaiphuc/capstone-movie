@@ -6,14 +6,18 @@ import { route } from '../../App'
 export default function SearchBar({ defaultValue }) {
     const navigate = useNavigate()
 
-    const handleSearch = ({ searchKey }) => {
+    const handleSearch = (searchKey) => {
         navigate(searchKey ? route.movies.search(searchKey) : route.movies.path)
     }
 
     const handleOnKeyDown = (e) => {
         if (e.key == "Enter") {
             e.preventDefault()
-            handleSearch({ searchKey: e.target.value })
+            let searchKey = e.target.value
+            let pattern = /^([a-zA-Z0-9ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]+)$/i
+            if (pattern.test(searchKey) || searchKey == "") {
+                handleSearch(searchKey)
+            }
         }
     }
 
@@ -42,7 +46,6 @@ export default function SearchBar({ defaultValue }) {
                 <Input
                     placeholder='Tìm kiếm...'
                     onKeyDown={handleOnKeyDown}
-                    onBlur={() => { console.log('blur') }}
                 />
             </Form.Item>
 

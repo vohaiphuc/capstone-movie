@@ -1,36 +1,17 @@
-import { faFilm, faStar } from '@fortawesome/free-solid-svg-icons'
+import { faFilm } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useWindowSize } from '@react-hook/window-size';
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux';
 import ArrowCarousel from './component/Carousel/ArrowCarousel';
-import { NavLink } from 'react-router-dom';
-import { route } from '../../App';
-import { convertToSlug } from './asset/utils';
-import ItemCarousel2 from './component/Carousel/ItemCarousel2';
 
-const sliderStat = {
+const sliderConfig = {
     width: 270,
     maxItem: 3
 }
 
 export default function Feature() {
-    const listPhim = useSelector(state => state.filmSlice.list)
-    const [topMovie, setTopMovie] = useState([]);
-    const [slidesToShow, setSlidesToShow] = useState(0)
-    const [width, height] = useWindowSize()
-    // Responsive
-    useEffect(() => {
-        let slides = Math.floor(width / sliderStat.width)
-        slides = slides > sliderStat.maxItem ? sliderStat.maxItem : slides
-        setSlidesToShow(slides)
-    }, [width])
-
-    useEffect(() => {
-        let copyPhim = [...listPhim]
-        copyPhim = copyPhim.sort((a, b) => b.danhGia - a.danhGia).slice(0, 5)
-        setTopMovie(copyPhim)
-    }, [listPhim])
+    let list = [...useSelector(state => state.filmSlice.list)]
+        .sort((a, b) => b.danhGia - a.danhGia).slice(0, 5)
 
     return (
         <div className='container flex items-center justify-end flex-wrap mb-10 featured-movie'>
@@ -45,7 +26,7 @@ export default function Feature() {
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus voluptatibus repellendus provident quia sunt ipsum voluptatem porro sed harum nostrum.</p>
             </div>
             <div className="w-full">
-                <ArrowCarousel list={topMovie} slidesToShow={slidesToShow} />
+                <ArrowCarousel list={list} sliderConfig={sliderConfig} />
             </div>
         </div>
     )

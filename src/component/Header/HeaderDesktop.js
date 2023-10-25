@@ -76,7 +76,7 @@ export default function HeaderDesktop() {
             <div className='font-semibold w-1/3 flex items-center justify-center text-center'>
                 <NavLink to={route.home.path} className={'nav'}>Home</NavLink>
                 <NavLink to={route.movies.path} className={'nav'}>Phim</NavLink>
-                <NavLink to={route.theaters.path} className={'nav'}>Rạp</NavLink>
+                {/* <NavLink to={route.theaters.path} className={'nav'}>Rạp</NavLink> */}
             </div>
             <div className='space-x-7 w-1/3 flex items-center justify-end'>
                 <Tooltip title="Tìm kiếm">
