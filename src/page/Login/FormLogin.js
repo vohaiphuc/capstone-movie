@@ -46,7 +46,6 @@ const FormLogin = () => {
             maxWidth: 600,
         }}
         initialValues={{
-            remember: true,
         }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}

@@ -6,6 +6,7 @@ import moment from 'moment/moment'
 import Billing from './Billing'
 import Seat from './Seat'
 import "./style.scss"
+import { route } from '../../App'
 
 export default function Booking() {
     const [searchParams, _] = useSearchParams()
@@ -30,16 +31,27 @@ export default function Booking() {
                         phim.forEach(item => listLichChieu.push(...item.lstLichChieuTheoPhim))
                     })
                 })
-                console.log("🚀 ~ file: Booking.js:34 ~ .then ~ listLichChieu:", listLichChieu)
                 let phim = listLichChieu.filter(item => item.maLichChieu == maLichChieu)[0]
-                console.log("🚀 ~ file: Booking.js:43 ~ .then ~ phim:", phim)
 
                 let ngayGioChieuUrl = searchParams.get('date')
 
                 if (ngayGioChieuUrl != phim.ngayChieuGioChieu) {
-                    navigate(`/booking/${maLichChieu}?date=${phim.ngayChieuGioChieu}`)
+                    window.location.href = route.booking.id(`${maLichChieu}?date=${phim.ngayChieuGioChieu}`)
                 } else {
-                    setNgayChieuGioChieu(phim.ngayChieuGioChieu)
+                    // setNgayChieuGioChieu(phim.ngayChieuGioChieu)
+
+                    bookingServ.get(maLichChieu)
+                        .then((res) => {
+                            let xuat = res.data.content
+                            let ngayChieuGioChieu = phim.ngayChieuGioChieu
+                            let correctGioChieu = moment(ngayChieuGioChieu).format("HH:mm")
+                            xuat.thongTinPhim.gioChieu = correctGioChieu
+                            xuat.thongTinPhim.ngayChieuGioChieu = ngayChieuGioChieu
+                            setXuatChieu(xuat)
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
                 }
             })
             .catch((err) => {
@@ -49,22 +61,22 @@ export default function Booking() {
 
     // console.log('render')
 
-    useEffect(() => {
-        // FETCH API
-        if (!ngayChieuGioChieu) { return }
-        bookingServ.get(maLichChieu)
-            .then((res) => {
-                let xuat = res.data.content
-                console.log({ xuat })
-                let correctGioChieu = moment(ngayChieuGioChieu).format("HH:mm")
-                xuat.thongTinPhim.gioChieu = correctGioChieu
-                xuat.thongTinPhim.ngayChieuGioChieu = ngayChieuGioChieu
-                setXuatChieu(xuat)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }, [ngayChieuGioChieu])
+    // useEffect(() => {
+    //     // FETCH API
+    //     if (!ngayChieuGioChieu) { return }
+    //     bookingServ.get(maLichChieu)
+    //         .then((res) => {
+    //             let xuat = res.data.content
+    //             console.log({ xuat })
+    //             let correctGioChieu = moment(ngayChieuGioChieu).format("HH:mm")
+    //             xuat.thongTinPhim.gioChieu = correctGioChieu
+    //             xuat.thongTinPhim.ngayChieuGioChieu = ngayChieuGioChieu
+    //             setXuatChieu(xuat)
+    //         })
+    //         .catch((err) => {
+    //             console.log(err)
+    //         })
+    // }, [ngayChieuGioChieu])
 
     const handleSelectSeat = (selecting) => {
         if (selecting.daDat) { return }
@@ -76,7 +88,6 @@ export default function Booking() {
             newSelectSeats.push(selecting)
         }
         setSelectSeats(newSelectSeats.sort((a, b) => a.maGhe - b.maGhe))
-        console.log("🚀 ~ file: Booking.js:76 ~ handleSelectSeat ~ newSelectSeats:", newSelectSeats)
     }
 
     return (
