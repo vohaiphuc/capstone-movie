@@ -7,6 +7,7 @@ export default function SearchBar({ defaultValue }) {
     const navigate = useNavigate()
 
     const handleSearch = (searchKey) => {
+        searchKey = typeof searchKey == 'object' ? searchKey.searchKey : searchKey
         navigate(searchKey ? route.movies.search(searchKey) : route.movies.path)
     }
 
