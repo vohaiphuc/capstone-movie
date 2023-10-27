@@ -83,7 +83,6 @@ const User = () => {
             maLoaiNguoiDung: user.maLoaiNguoiDung,
             hoTen: userInfo.hoTen,
         }
-        console.log("🚀 ~ file: User.js:73 ~ onFinish ~ configInfo:", configInfo)
         userServ.update(configInfo)
             .then((res) => {
                 message.success("Thay đổi thông tin thành công!")

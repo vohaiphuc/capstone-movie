@@ -42,7 +42,6 @@ export default function Detail() {
     const idPhim = nameIdParam[nameIdParam.length - 1]
     const [phim, setPhim] = useState([]);
     const width = useWindowWidth()
-    console.log("🚀 ~ file: Detail.js:26 ~ Detail ~ width:", width)
     const [loading, setLoading] = useState(true);
 
     // xử lý API => gọi ra tên phim để gắn vào title của DefaultBanner
@@ -51,7 +50,6 @@ export default function Detail() {
         theaterServ.getLichChieu(idPhim)
             .then((res) => {
                 const phim = res.data.content
-                console.log(phim)
                 let defaultTrailer = "https://www.youtube.com/embed/hktzirCnJmQ?si=_I17nhK-w7n7gstR"
                 phim.trailer = !phim.trailer.startsWith("https://www.youtube.com") ? defaultTrailer : phim.trailer
                 phim.trailer = phim.trailer.startsWith("https://www.youtube.com/watch?v=") ? phim.trailer.replace("https://www.youtube.com/watch?v=", "https://www.youtube.com/embed/") : phim.trailer

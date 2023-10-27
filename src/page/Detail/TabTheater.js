@@ -7,14 +7,13 @@ import XuatChieuMobile from './XuatChieuMobile';
 const TabTheater = ({ phim, screen }) => {
 
     const renderCumRap = () => {
-        console.log({ phim })
         return phim.heThongRapChieu?.map((cumRap, index) => {
             return {
                 key: `cum_${index}`,
                 label: <Tooltip title={cumRap.tenHeThongRap.toUpperCase()} placement="bottom"><img src={cumRap.logo} alt="" width={50} /></Tooltip>,
                 children: (screen == 'desktop')
                     ?
-                    <Tabs tabPosition='left' defaultActiveKey="1" items={renderRap(cumRap.cumRapChieu, true)} onChange={() => { console.log("Change rạp") }} className='h-[500px]' />
+                    <Tabs tabPosition='left' defaultActiveKey="1" items={renderRap(cumRap.cumRapChieu, true)} className='h-[500px]' />
                     :
                     <Collapse defaultActiveKey={['1']} items={renderRap(cumRap.cumRapChieu, false)} />
             }
@@ -87,6 +86,6 @@ const TabTheater = ({ phim, screen }) => {
     }
 
 
-    return <Tabs defaultActiveKey="1" items={renderCumRap()} onChange={() => { console.log(renderCumRap()) }} style={{ maxWidth: 1200 }} />
+    return <Tabs defaultActiveKey="1" items={renderCumRap()} style={{ maxWidth: 1200 }} />
 }
 export default TabTheater;

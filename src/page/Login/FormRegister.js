@@ -46,7 +46,7 @@ const FormRegister = () => {
     const dispatch = useDispatch()
     const [form] = Form.useForm()
     const onFinish = (registerInfo) => {
-        console.log('Received registerInfo of form: ', registerInfo)
+        // console.log('Received registerInfo of form: ', registerInfo)
         const configInfo = {
             taiKhoan: registerInfo.taiKhoan,
             matKhau: registerInfo.matKhau,

@@ -36,7 +36,6 @@ const Banner = () => {
     useEffect(() => {
         filmServ.getBanner()
             .then((res) => {
-                // console.log(res);
                 setBanner(res.data.content)
             })
             .catch((err) => {
@@ -80,7 +79,6 @@ const Banner = () => {
     }
 
     const handleAutoplay = (auto) => {
-        console.log(ref1.current);
         if (auto) {
             ref1.current.innerSlider.autoPlay()
         } else {

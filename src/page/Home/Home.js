@@ -19,7 +19,6 @@ export default function Home() {
         theaterServ.getList()
             .then((res) => {
                 let list = theaterServ.mapLichChieuTheaterToLichChieuMovie(res.data.content)
-                console.log("🚀 ~ file: Home.js:21 ~ .then ~ list:", list)
                 dispatch(setFilmList(list))
             })
             .catch((err) => {

@@ -31,7 +31,6 @@ export default function Seat({ list, selectSeats, handleSelectSeat }) {
             start = start + maxSeatPerRow
             row++
         }
-        // console.log({ theaterMap });
         return theaterMap
     }
 
@@ -54,7 +53,7 @@ export default function Seat({ list, selectSeats, handleSelectSeat }) {
                         let className = `seat ${loaiGhe} ${daDat} ${dangChon}`
                         let seatName = !daDat ? `${row.rowName}${index + 1}` : "x"
 
-                        return <div key={seat.maGhe} className={className} onClick={() => { console.log(seat); handleSelectSeat({ ...seat, maGheAbc: `${row.rowName}${index + 1}` }) }}>
+                        return <div key={seat.maGhe} className={className} onClick={() => { handleSelectSeat({ ...seat, maGheAbc: `${row.rowName}${index + 1}` }) }}>
                             <Tooltip title={seat.giaVe.toLocaleString()} placement='bottom'>
                                 <p>{seatName}</p>
                             </Tooltip>

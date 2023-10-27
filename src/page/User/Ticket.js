@@ -3,7 +3,6 @@ import moment from 'moment';
 import React from 'react'
 
 export default function Ticket({ thongTinDatVe }) {
-    console.log("🚀 ~ file: Ticket.js:6 ~ Ticket ~ thongTinDatVe:", thongTinDatVe)
 
     const getSeatCode = () => {
         let totalSeat = 160

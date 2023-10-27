@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom'
 
 export default function Billing({ phim, selectSeats }) {
     const navigate = useNavigate()
-    console.log("🚀 ~ file: Billing.js:4 ~ Billing ~ phim:", phim)
     let date = moment(phim?.ngayChieuGioChieu).locale("vi")
 
     const tinhTong = () => {
@@ -22,11 +21,9 @@ export default function Billing({ phim, selectSeats }) {
                 return { maGhe, giaVe }
             })
         }
-        console.log("🚀 ~ file: Billing.js:17 ~ handleBooking ~ bookingRequest:", bookingRequest)
 
         bookingServ.set(bookingRequest)
             .then((res) => {
-                console.log(res.data)
                 message.success(res.data.content)
                 setTimeout(() => {
                     navigate(0)

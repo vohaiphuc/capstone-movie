@@ -13,14 +13,13 @@ const FormLogin = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const onFinish = (loginInfo) => {
-        console.log("Success:", loginInfo)
+        // console.log("Success:", loginInfo)
         userServ.login(loginInfo)
             .then((res) => {
                 message.success("Đăng nhập thành công")
                 const user = res.data.content
                 // save local
                 userLocalStorage.set(user)
-                console.log(userLocalStorage.get())
                 // save redux
                 dispatch(setLogin(user))
                 // navigate
