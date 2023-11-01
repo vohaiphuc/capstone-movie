@@ -38,7 +38,7 @@ export default function Booking() {
                 if (ngayGioChieuUrl != phim.ngayChieuGioChieu) {
                     window.location.href = route.booking.id(`${maLichChieu}?date=${phim.ngayChieuGioChieu}`)
                 } else {
-                    // setNgayChieuGioChieu(phim.ngayChieuGioChieu)
+                    setNgayChieuGioChieu(phim.ngayChieuGioChieu)
 
                     bookingServ.get(maLichChieu)
                         .then((res) => {

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
     isLoading: false,
+    queueCount: 0,
 }
 
 const spinnerSlice = createSlice({
@@ -9,10 +10,14 @@ const spinnerSlice = createSlice({
     initialState,
     reducers: {
         setLoadingOn: (state) => {
+            state.queueCount++
             state.isLoading = true
         },
         setLoadingOff: (state) => {
-            state.isLoading = false
+            state.queueCount--
+            if (state.queueCount == 0) {
+                state.isLoading = false
+            }
         },
     }
 })

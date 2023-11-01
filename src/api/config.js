@@ -15,6 +15,7 @@ export const https = axios.create({
 })
 
 https.interceptors.request.use(function (config) {
+    console.log("đi");
     store.dispatch(setLoadingOn())
     return config
 
@@ -24,6 +25,7 @@ https.interceptors.request.use(function (config) {
 })
 
 https.interceptors.response.use(function (response) {
+    console.log("về");
     store.dispatch(setLoadingOff())
     return response
 
