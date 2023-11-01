@@ -1,12 +1,23 @@
 import moment from 'moment'
 import 'moment/locale/vi'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { bookingServ } from '../../api/api'
 import { message } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { route } from '../../App'
 
 export default function Billing({ phim, selectSeats }) {
     const navigate = useNavigate()
+    const { user } = useSelector(state => state.userSlice)
+
+    useEffect(() => {
+        if (!user) {
+            navigate(route.login.path)
+        }
+    }, [])
+
+
     let date = moment(phim?.ngayChieuGioChieu).locale("vi")
 
     const tinhTong = () => {
@@ -15,6 +26,7 @@ export default function Billing({ phim, selectSeats }) {
     }
 
     const handleBooking = () => {
+
         let bookingRequest = {
             "maLichChieu": phim.maLichChieu,
             "danhSachVe": selectSeats.map(({ maGhe, giaVe }) => {
